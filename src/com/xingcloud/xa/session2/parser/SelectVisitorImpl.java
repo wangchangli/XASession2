@@ -50,8 +50,17 @@ public class SelectVisitorImpl implements SelectVisitor {
         Distinct distinct = plainSelect.getDistinct();
         com.xingcloud.xa.session2.ra.Distinct xDistinct = null;
         if(distinct != null){
+            List<SelectItem> distinctItems = distinct.getOnSelectItems();
+            com.xingcloud.xa.session2.ra.expr.Expression[] distinctExpressions = new com.xingcloud.xa.session2.ra.expr.Expression[distinctItems == null? 0 : distinctItems.size()];
+            if(distinctItems != null){
+                for(SelectItem distinctItem: distinctItems){
+                    SelectItemVisitorImpl visitor = new SelectItemVisitorImpl(fromItemVisitor.getRelationProvider());
+                    distinctItem.accept(visitor);
+                    distinctExpressions[distinctItems.indexOf(distinctItem)] = visitor.getExpression();
+                }
+            }
             xDistinct = PlanFactory.getInstance().newDistinct();
-            xDistinct.setInput(fromItemVisitor.getRelationProvider(), selectExpressions);
+            xDistinct.setInput(fromItemVisitor.getRelationProvider(), distinctExpressions);
         }
 
         //Get group
@@ -66,16 +75,17 @@ public class SelectVisitorImpl implements SelectVisitor {
         }
 
         //Get projection
-        Projection projection = PlanFactory.getInstance().newProjection();
-        if(group != null){
-            projection.setInput(group, selectExpressions);
-        } else if(xDistinct != null){
-            projection.setInput(xDistinct, selectExpressions);
-        } else{
-            projection.setInput(fromItemVisitor.getRelationProvider(), selectExpressions);
+        if(group == null){
+            Projection projection = PlanFactory.getInstance().newProjection();
+            if(xDistinct != null){
+                projection.setInput(xDistinct, selectExpressions);
+            } else{
+                projection.setInput(fromItemVisitor.getRelationProvider(), selectExpressions);
+            }
+            operation = projection;
+        } else {
+            operation = group;
         }
-
-        operation = projection;
 
     }
 

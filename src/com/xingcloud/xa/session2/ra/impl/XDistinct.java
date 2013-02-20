@@ -1,9 +1,6 @@
 package com.xingcloud.xa.session2.ra.impl;
 
-import com.xingcloud.xa.session2.ra.Distinct;
-import com.xingcloud.xa.session2.ra.Relation;
-import com.xingcloud.xa.session2.ra.RelationProvider;
-import com.xingcloud.xa.session2.ra.Row;
+import com.xingcloud.xa.session2.ra.*;
 import com.xingcloud.xa.session2.ra.expr.Expression;
 
 import java.util.*;
@@ -23,14 +20,16 @@ public class XDistinct extends AbstractOperation implements Distinct {
            List<Object[]> rows = new ArrayList<Object[]>();
             Map<String, Integer> columnIndex = new TreeMap<String, Integer>();
 
-            XRelation.XRow row = null;
             Map<Expression, HashSet<String>> distinctMap = new HashMap<Expression, HashSet<String>>();
 
-            while ((row = (XRelation.XRow)relation.nextRow()) != null){
+            RowIterator iterator = relation.iterator();
+            while (iterator.hasNext()){
+                XRelation.XRow row = (XRelation.XRow)iterator.nextRow();
                 columnIndex = row.columnNames;   // todo
                 Boolean distinct = true;
                 for (int i = 0; i < expressions.length; i++){
                     Expression expression = expressions[i];
+
                     if (distinctMap.get(expression) == null){
                         distinctMap.put(expression, new HashSet<String>());
                     }

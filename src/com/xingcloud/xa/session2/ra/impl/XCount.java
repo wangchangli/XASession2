@@ -1,9 +1,6 @@
 package com.xingcloud.xa.session2.ra.impl;
 
-import com.xingcloud.xa.session2.ra.Aggregation;
-import com.xingcloud.xa.session2.ra.Count;
-import com.xingcloud.xa.session2.ra.RelationProvider;
-import com.xingcloud.xa.session2.ra.Row;
+import com.xingcloud.xa.session2.ra.*;
 
 /**
  * Author: mulisen
@@ -22,7 +19,9 @@ public class XCount extends AbstractAggregation implements Count {
 	public Object aggregate() {
 		//return null;  //TODO method implementation
         Long l = 0L;
-        while (relation.nextRow() != null){
+        RowIterator iterator = relation.iterator();
+        while (iterator.hasNext()){
+            iterator.nextRow();
             l++;
         }
         return String.valueOf(l);

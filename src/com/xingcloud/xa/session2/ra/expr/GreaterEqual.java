@@ -14,14 +14,12 @@ public class GreaterEqual extends BinaryExpression  {
     }
 
     public Object evaluate(Row input) {
-        Object l = left.evaluate(input);
-        Object r = right.evaluate(input);
-        int li = 0;
-        int ri = 0;
-
-        if (l instanceof String){
-
+        try{
+            Object l = left.evaluate(input);
+            Object r = right.evaluate(input);
+            return Double.parseDouble(l.toString()) >= Double.parseDouble(r.toString());
+        }catch (Exception e){
+            return true;
         }
-        return li >= ri;
     }
 }

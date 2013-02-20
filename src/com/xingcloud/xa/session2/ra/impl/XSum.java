@@ -1,9 +1,6 @@
 package com.xingcloud.xa.session2.ra.impl;
 
-import com.xingcloud.xa.session2.ra.Aggregation;
-import com.xingcloud.xa.session2.ra.RelationProvider;
-import com.xingcloud.xa.session2.ra.Row;
-import com.xingcloud.xa.session2.ra.Sum;
+import com.xingcloud.xa.session2.ra.*;
 
 /**
  * Author: mulisen
@@ -24,10 +21,11 @@ public class XSum extends AbstractAggregation implements Sum {
 
 	public Object aggregate() {
 		//return null;  //TODO method implementation
-        //if (result == null){
-        Row row = null;
+        //if (result == null){ //todo
         Long sum = 0L;
-        while ((row=relation.nextRow()) != null){
+        RowIterator iterator = relation.iterator();
+        while (iterator.hasNext()){
+            Row row = iterator.nextRow();
             System.out.println(row.get(columnName));
             sum+=Long.valueOf((String)row.get(columnName));
         }

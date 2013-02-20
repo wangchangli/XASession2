@@ -57,7 +57,8 @@ public class XProjection extends AbstractOperation implements Projection{
         if(projections == null){
             //columnIndex = relation
         }else{
-            Row oldRow = relation.nextRow(); // just need one row
+            RowIterator iterator = relation.iterator();
+            Row oldRow = iterator.nextRow(); // just need one row
             Object[] newRow = new Object[newProjections.size()];
             for (int i = 0; i < newProjections.size(); i++) {
                 Expression proj = newProjections.get(i);
@@ -70,8 +71,10 @@ public class XProjection extends AbstractOperation implements Projection{
         }
 
         if (! hasAggregation){ //calculate each row
-            Row oldRow = null;
-            while ((oldRow = relation.nextRow()) != null){
+            RowIterator iterator = relation.iterator();
+            iterator.nextRow();// we have already iterator one row
+            while (iterator.hasNext()){
+                Row oldRow = iterator.nextRow();
                 Object[] newRow = new Object[newProjections.size()];
                 for (int i = 0; i < newProjections.size(); i++) {
                     Expression proj = newProjections.get(i);

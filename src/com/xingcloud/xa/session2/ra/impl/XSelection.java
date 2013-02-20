@@ -31,8 +31,9 @@ public class XSelection extends AbstractOperation implements Selection{
             List<Object[]> rows = new ArrayList<Object[]>();
             Map<String, Integer> columnIndex = new TreeMap<String, Integer>();
 
-            XRelation.XRow row = null;
-            while ((row = (XRelation.XRow)relation.nextRow()) != null){
+            RowIterator iterator = relation.iterator();
+            while (iterator.hasNext()){
+                XRelation.XRow row = (XRelation.XRow)iterator.nextRow();
                 if (expression == null || ((Boolean)expression.evaluate(row))){
                     rows.add(row.rowData);
                     columnIndex = row.columnNames;

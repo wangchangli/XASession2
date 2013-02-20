@@ -10,12 +10,28 @@ public class ColumnValue implements Expression {
 
 	public String columnName;
 
+	public String tableName;
+
 	public ColumnValue(String columnName) {
-		this.columnName = columnName;
+		this(columnName, null);
 	}
 
-	public Object evaluate(Row input){
-        //System.out.println("sssss"+columnName);
-		return input.get(columnName);
+	public ColumnValue(String columnName, String tableName) {
+		this.columnName = columnName;
+		this.tableName = tableName;
+	}
+
+//<<<<<<< HEAD
+//	public Object evaluate(Row input){
+//        //System.out.println("sssss"+columnName);
+//		return input.get(columnName);
+//=======
+	public Object evaluate(Row input) {
+
+		Object ret = input.get(columnName);
+		if(null == ret){
+			throw new IllegalArgumentException("cannot find column:"+columnName);
+		}
+		return ret;
 	}
 }

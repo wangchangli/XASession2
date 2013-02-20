@@ -1,9 +1,6 @@
 package com.xingcloud.xa.session2.ra.impl;
 
-import com.xingcloud.xa.session2.ra.Operation;
-import com.xingcloud.xa.session2.ra.Relation;
-import com.xingcloud.xa.session2.ra.RelationProvider;
-import com.xingcloud.xa.session2.ra.Row;
+import com.xingcloud.xa.session2.ra.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,10 +23,14 @@ public abstract class AbstractOperation implements Operation{
 		inputs.clear();
 	}
 
-	public Row nextRow() {
+	public List<RelationProvider> getInputs() {
+		return inputs;
+	}
+
+	public RowIterator iterator() {
 		if(result == null){
 			result = this.evaluate();
 		}
-		return result.nextRow();
+		return result.iterator();
 	}
 }
