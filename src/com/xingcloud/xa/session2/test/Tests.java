@@ -16,7 +16,7 @@ import java.util.Set;
  */
 public class Tests {
 
-    public static String sql0 = "select * from (event natural join user)";
+    public static String sql0 = "select * from (event natural join user) group by user.ref0";
 	public static String sql1 = "select * from event;";
 
 	public static String sql2 = "select event, uid from event where date='2013-02-01';";
@@ -44,10 +44,10 @@ public class Tests {
 	public static void main(String[] args) throws JSQLParserException {
         //test();
         System.out.println(PlanExecutor.executePlan(Parser.getInstance().parse(Tests.sql0)).toString());
-        System.out.println(PlanExecutor.executePlan(Parser.getInstance().parse(Tests.sql1)).toString());
-		System.out.println(PlanExecutor.executePlan(Parser.getInstance().parse(Tests.sql2)).toString());
-		System.out.println(PlanExecutor.executePlan(Parser.getInstance().parse(Tests.sql3)));
-        System.out.println(PlanExecutor.executePlan(Parser.getInstance().parse(Tests.sql4)));
+        //System.out.println(PlanExecutor.executePlan(Parser.getInstance().parse(Tests.sql1)).toString());
+		//System.out.println(PlanExecutor.executePlan(Parser.getInstance().parse(Tests.sql2)).toString());
+		//System.out.println(PlanExecutor.executePlan(Parser.getInstance().parse(Tests.sql3)));
+        //System.out.println(PlanExecutor.executePlan(Parser.getInstance().parse(Tests.sql4)));
     }
 
 

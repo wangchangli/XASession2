@@ -23,9 +23,11 @@ public class XGroup extends AbstractOperation implements Group {
 
         // group rows
         Map<String, List<Row>> groupRows = new HashMap<String, List<Row>>();
+        Map<String, Integer> _columnIndex = new TreeMap<String, Integer>();
         RowIterator iterator = relation.iterator();
         while (iterator.hasNext()){
             XRelation.XRow row = (XRelation.XRow)iterator.nextRow();
+            _columnIndex = row.columnNames;
             String groupString = "";
             for(Expression expression:groupingExpressions){
                 groupString += (String)expression.evaluate(row);
@@ -45,15 +47,29 @@ public class XGroup extends AbstractOperation implements Group {
             String groupString = entry.getKey();
             groupProjectionRows.put(groupString, new ArrayList<Object[]>());
 
-            for(Row oldRow:oldRows){
-                Object[] newRow = new Object[projectionExpressions.length];
-                for (int i = 0; i < projectionExpressions.length; i++) {
-                    Expression proj = projectionExpressions[i];
-                    newRow[i] = proj.evaluate(oldRow);
-                }
 
-                groupProjectionRows.get(groupString).add(newRow);
+            //construct xprojection for each group rows
+            List<Object[]> _oldRows  = new ArrayList<Object[]>();
+            for(Row row:oldRows){
+                _oldRows.add(((XRelation.XRow)row).rowData);
             }
+            XProjection xProjection = new XProjection();
+            xProjection.setInput(new XRelation(_columnIndex,_oldRows),projectionExpressions);
+
+            //projection
+            XRelation relation = (XRelation)xProjection.evaluate();
+
+            groupProjectionRows.get(groupString).addAll(relation.rows);
+
+//            for(Row oldRow:oldRows){
+//                Object[] newRow = new Object[projectionExpressions.length];
+//                for (int i = 0; i < projectionExpressions.length; i++) {
+//                    Expression proj = projectionExpressions[i];
+//                    newRow[i] = proj.evaluate(oldRow);
+//                }
+//
+//                groupProjectionRows.get(groupString).add(newRow);
+//            }
         }
 
         // combine each group result

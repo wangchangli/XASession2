@@ -29,8 +29,11 @@ public class XProjection extends AbstractOperation implements Projection{
 
         List<Expression> newProjections = new ArrayList<Expression>();
 
-        XRelation xRelation = (XRelation)((Operation)relation).evaluate();
-        oldColumnIndex = xRelation.columnIndex;
+//        XRelation xRelation = (XRelation)((Operation)relation).evaluate();
+//        oldColumnIndex = xRelation.columnIndex;
+
+        RowIterator rowIterator = relation.iterator();
+        oldColumnIndex = ((XRelation.XRow)rowIterator.nextRow()).columnNames;
 
         // column(*)
         int colNum=0;
