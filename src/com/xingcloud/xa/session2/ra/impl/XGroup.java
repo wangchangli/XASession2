@@ -21,6 +21,8 @@ public class XGroup extends AbstractOperation implements Group {
 	public Relation evaluate() {
 		//return null;  //TODO method implementation
 
+        Map<String, Integer> columnIndex = new TreeMap<String, Integer>();
+
         // group rows
         Map<String, List<Row>> groupRows = new HashMap<String, List<Row>>();
         Map<String, Integer> _columnIndex = new TreeMap<String, Integer>();
@@ -58,7 +60,7 @@ public class XGroup extends AbstractOperation implements Group {
 
             //projection
             XRelation relation = (XRelation)xProjection.evaluate();
-
+            columnIndex =  relation.columnIndex;
             groupProjectionRows.get(groupString).addAll(relation.rows);
 
 //            for(Row oldRow:oldRows){
@@ -72,19 +74,14 @@ public class XGroup extends AbstractOperation implements Group {
 //            }
         }
 
+
         // combine each group result
         List<Object[]> rows = new ArrayList<Object[]>();
-        Map<String, Integer> columnIndex = new TreeMap<String, Integer>();
-        for (int i = 0; i < projectionExpressions.length; i++) {
-            Expression proj = projectionExpressions[i];
-            StringBuilder sb = new StringBuilder();
-            InlinePrint.printExpression(proj,sb);
-            columnIndex.put(sb.toString(),i);
-        }
-
         for(Map.Entry<String, List<Object[]>> entry:groupProjectionRows.entrySet()){
             rows.addAll(entry.getValue());
         }
+
+
         return new XRelation(columnIndex,rows);
 	}
 

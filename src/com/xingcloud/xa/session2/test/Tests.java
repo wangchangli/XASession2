@@ -7,6 +7,9 @@ import com.xingcloud.xa.session2.ra.Row;
 import com.xingcloud.xa.session2.ra.impl.XRelation;
 import net.sf.jsqlparser.JSQLParserException;
 
+
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -41,13 +44,32 @@ public class Tests {
         System.out.println(((Boolean)(2>1)).toString());
     }
 
-	public static void main(String[] args) throws JSQLParserException {
-        //test();
-        System.out.println(PlanExecutor.executePlan(Parser.getInstance().parse(Tests.sql0)).toString());
-        //System.out.println(PlanExecutor.executePlan(Parser.getInstance().parse(Tests.sql1)).toString());
-		//System.out.println(PlanExecutor.executePlan(Parser.getInstance().parse(Tests.sql2)).toString());
-		//System.out.println(PlanExecutor.executePlan(Parser.getInstance().parse(Tests.sql3)));
-        //System.out.println(PlanExecutor.executePlan(Parser.getInstance().parse(Tests.sql4)));
+	public static void main(String[] args) throws JSQLParserException{
+        try{
+            //test();
+            String file = "data/1/result";
+            BufferedWriter bw = new BufferedWriter(new FileWriter(file));
+            try{
+                //bw.write(sql0+"\n");
+                //bw.write(PlanExecutor.executePlan(Parser.getInstance().parse(Tests.sql0)).toString());
+                bw.write(sql1+"\n");
+                bw.write(PlanExecutor.executePlan(Parser.getInstance().parse(Tests.sql1)).toString());
+                bw.write(sql2+"\n");
+                bw.write(PlanExecutor.executePlan(Parser.getInstance().parse(Tests.sql2)).toString());
+                bw.write(sql3+"\n");
+                bw.write(PlanExecutor.executePlan(Parser.getInstance().parse(Tests.sql3)).toString());
+                bw.write(sql4+"\n");
+                bw.write(PlanExecutor.executePlan(Parser.getInstance().parse(Tests.sql4)).toString());
+                bw.flush();
+            }catch (Exception ee){
+
+            }finally {
+                bw.close();
+            }
+
+        }catch (Exception e){
+
+        }
     }
 
 

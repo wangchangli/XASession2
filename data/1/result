@@ -1,26 +1,24 @@
-select * from (event natural join user) group by user.ref0`date`	`event`	`last_login_time`	`ref0`	`ref1`	`register_time`	`timestamp`	`uid`	`value`
-2013-02-02	visit	20130225000000	f	f000	20130201134205	13554830768	2	1
-2013-02-02	pay	20130225000000	f	f000	20130201134205	13554830768	2	1
-2013-02-01	visit	20130225000000	g	g000	20130201000000	13543059382	1	0
-2013-02-02	visit	20130225000000	g	g001	20130202090811	13554830768	3	1
-2013-02-02	visit	20130225000000	g	g000	20130201000000	13554830768	1	1
-select * from event;`date`	`event`	`timestamp`	`uid`	`value`
+select * from event;
+`date`	`event`	`timestamp`	`uid`	`value`
 2013-02-01	visit	13543059382	1	0
 2013-02-02	visit	13554830768	2	1
 2013-02-02	pay	13554830768	2	1
 2013-02-02	visit	13554830768	3	1
 2013-02-02	visit	13554830768	1	1
 2013-02-02	pay	13554830768	243	1
-select event, uid from event where date='2013-02-01';`event`	`uid`
+select event, uid from event where date='2013-02-01';
+`event`	`uid`
 visit	1
 SELECT COUNT(DISTINCT(uid))
 FROM (event NATURAL JOIN user)
 WHERE user.register_time>='20130201000000' AND user.register_time<'20130202000000'
-AND event.date='2013-02-02' AND event.event='visit';COUNT(..)
+AND event.date='2013-02-02' AND event.event='visit';
+COUNT(..)
 2
 SELECT user.ref0, COUNT(DISTINCT(uid)), SUM(value)
 FROM (event NATURAL JOIN user)
 WHERE user.register_time>='20130201000000' AND user.register_time<'20130202000000'
-AND event.date='2013-02-02' AND event.event='visit' GROUP BY user.ref0;`ref0`	COUNT(..)	SUM(..)
+AND event.date='2013-02-02' AND event.event='visit' GROUP BY user.ref0;
+`ref0`	COUNT(..)	SUM(..)
 f	2	2
 g	2	2
