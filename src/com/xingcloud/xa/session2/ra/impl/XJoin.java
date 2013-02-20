@@ -17,46 +17,72 @@ public class XJoin extends AbstractOperation implements Join{
 
 	public Relation evaluate() {
 		//return null;  //TODO method implementation
+        if (result == null){
+            List<Object[]> rows = new ArrayList<Object[]>();
 
-        List<Object[]> rows = new ArrayList<Object[]>();
+            XRelation xLeft = (XRelation)((Operation)left).evaluate();
+            XRelation xRight = (XRelation)((Operation)right).evaluate();
 
-        XRelation xLeft = (XRelation)((Operation)left).evaluate();
-        XRelation xRight = (XRelation)((Operation)right).evaluate();
+            List<Object[]> leftRows = xLeft.rows;
+            List<Object[]> rightRows = xRight.rows;
 
-        List<Object[]> leftRows = xLeft.rows;
-        List<Object[]> rightRows = xRight.rows;
-
-        Map<String, Integer> leftColumnIndex = xLeft.columnIndex;
-        Map<String, Integer> rightColumnIndex = xRight.columnIndex;
+            Map<String, Integer> leftColumnIndex = xLeft.columnIndex;
+            Map<String, Integer> rightColumnIndex = xRight.columnIndex;
 
 
-        Map<String, Integer> newColumnIndex = leftColumnIndex;  // todo
-        List<String> sameCols = new ArrayList<String>();
-        for (Map.Entry<String, Integer> lEntry: leftColumnIndex.entrySet()){
-            for (Map.Entry<String, Integer> rEntry: rightColumnIndex.entrySet()){
-                if (lEntry.getKey().equals(rEntry.getKey())){
-                    sameCols.add(lEntry.getKey());
-                }
-            }
-        }
-        for(Object[] leftRow: leftRows){
-            for(Object[] rightRow:rightRows){
-                Boolean natural = true;
-                for(String sameCol: sameCols){
-                    if (!(leftRow[leftColumnIndex.get(sameCol)].toString().equals(rightRow[rightColumnIndex.get(sameCol)].toString()))){
-                        natural = false;
+            // get the columns with the same name
+            List<String> sameCols = new ArrayList<String>();
+            List<Integer> rightSameColsIndex = new ArrayList<Integer>();
+            for (Map.Entry<String, Integer> lEntry: leftColumnIndex.entrySet()){
+                for (Map.Entry<String, Integer> rEntry: rightColumnIndex.entrySet()){
+                    if (lEntry.getKey().equals(rEntry.getKey())){
+                        sameCols.add(lEntry.getKey());
+                        rightSameColsIndex.add(rEntry.getValue());
                     }
                 }
-                if(natural){
-                    Object[] newRow = new Object[leftRow.length+rightRow.length];
-                    System.arraycopy(leftRow,0,newRow,0,leftRow.length);
-                    System.arraycopy(rightRow,0,newRow,leftRow.length,rightRow.length);
-                    rows.add(newRow);
+            }
+
+            // get the natural rows
+            for(Object[] leftRow: leftRows){
+                for(Object[] rightRow:rightRows){
+                    Boolean natural = true;
+                    for(String sameCol: sameCols){
+                        if (!(leftRow[leftColumnIndex.get(sameCol)].toString().equals(rightRow[rightColumnIndex.get(sameCol)].toString()))){
+                            natural = false;
+                        }
+                    }
+                    if(natural){
+                        Object[] newRow = new Object[leftRow.length+rightRow.length-sameCols.size()];
+                        System.arraycopy(leftRow,0,newRow,0,leftRow.length);
+
+                        int j=leftRow.length;
+                        for(int i=0; i<rightRow.length; i++){
+                            if(! rightSameColsIndex.contains(i)){
+                                newRow[j] = rightRow[i];
+                                j++;
+                            }
+                        }
+
+                        rows.add(newRow);
+                    }
                 }
             }
+
+            // combine the left/right column index
+            Map<String, Integer> newColumnIndex = new TreeMap<String, Integer>();
+            for(Map.Entry<String, Integer> lEntry: leftColumnIndex.entrySet()){
+                newColumnIndex.put(lEntry.getKey(),lEntry.getValue());
+            }
+            for (Map.Entry<String, Integer> rEntry: rightColumnIndex.entrySet()){
+                if (!newColumnIndex.containsKey(rEntry.getKey())){
+                    newColumnIndex.put(rEntry.getKey(),rEntry.getValue()+leftColumnIndex.size()-1);
+                }
+            }
+
+            result = new XRelation(newColumnIndex, rows);
         }
 
-        return new XRelation(newColumnIndex, rows);
+        return result;
 	}
 
 	public Join setInput(RelationProvider left, RelationProvider right) {

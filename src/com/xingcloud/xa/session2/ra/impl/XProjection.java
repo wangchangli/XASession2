@@ -40,12 +40,16 @@ public class XProjection extends AbstractOperation implements Projection{
                 for(Map.Entry<String, Integer> entry: oldColumnIndex.entrySet()){
                     Expression expression = new ColumnValue(entry.getKey());
                     newProjections.add(expression);
-                    newColumnIndex.put(expression.toString(), colNum);
+                    StringBuilder sb = new StringBuilder();
+                    InlinePrint.printExpression(expression,sb);
+                    newColumnIndex.put(sb.toString(), colNum);
                     colNum++;
                 }
             }else{
                 newProjections.add(proj);
-                newColumnIndex.put(proj.toString(), colNum);
+                StringBuilder sb = new StringBuilder();
+                InlinePrint.printExpression(proj,sb);
+                newColumnIndex.put(sb.toString(), colNum); // todo toString impl
                 colNum++;
             }
         }

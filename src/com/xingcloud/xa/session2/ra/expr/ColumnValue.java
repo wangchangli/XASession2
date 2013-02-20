@@ -21,11 +21,6 @@ public class ColumnValue implements Expression {
 		this.tableName = tableName;
 	}
 
-//<<<<<<< HEAD
-//	public Object evaluate(Row input){
-//        //System.out.println("sssss"+columnName);
-//		return input.get(columnName);
-//=======
 	public Object evaluate(Row input) {
 
 		Object ret = input.get(columnName);

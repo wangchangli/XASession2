@@ -59,6 +59,12 @@ public class XGroup extends AbstractOperation implements Group {
         // combine each group result
         List<Object[]> rows = new ArrayList<Object[]>();
         Map<String, Integer> columnIndex = new TreeMap<String, Integer>();
+        for (int i = 0; i < projectionExpressions.length; i++) {
+            Expression proj = projectionExpressions[i];
+            StringBuilder sb = new StringBuilder();
+            InlinePrint.printExpression(proj,sb);
+            columnIndex.put(sb.toString(),i);
+        }
 
         for(Map.Entry<String, List<Object[]>> entry:groupProjectionRows.entrySet()){
             rows.addAll(entry.getValue());

@@ -26,7 +26,7 @@ public class XSum extends AbstractAggregation implements Sum {
         RowIterator iterator = relation.iterator();
         while (iterator.hasNext()){
             Row row = iterator.nextRow();
-            System.out.println(row.get(columnName));
+            //System.out.println(row.get(columnName));
             sum+=Long.valueOf((String)row.get(columnName));
         }
 

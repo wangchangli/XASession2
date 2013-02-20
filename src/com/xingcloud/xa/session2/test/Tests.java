@@ -16,8 +16,8 @@ import java.util.Set;
  */
 public class Tests {
 
-    public static String sql0 = "select count(uid) from user";
-	public static String sql1 = "select * from user;";
+    public static String sql0 = "select * from (event natural join user)";
+	public static String sql1 = "select * from event;";
 
 	public static String sql2 = "select event, uid from event where date='2013-02-01';";
 
@@ -33,19 +33,6 @@ public class Tests {
 								"GROUP BY user.ref0;";
 
 
-//    public static void printResult(RelationProvider relationProvider){
-//        XRelation.XRow row = null;
-//        StringBuffer sb = new StringBuffer();
-//        while ((row = (XRelation.XRow)relationProvider.nextRow())!= null){
-//            for(Object object:row.rowData){
-//                sb.append((String) object);
-//                sb.append("\t");
-//            }
-//            sb.append("\n");
-//        }
-//        System.out.println(sb.toString());
-//    }
-
     public static void  test(){
 //        Set<String> set = new HashSet<String>();
 //        set.add("a");
@@ -55,12 +42,12 @@ public class Tests {
     }
 
 	public static void main(String[] args) throws JSQLParserException {
-        test();
-        //System.out.println(PlanExecutor.executePlan(Parser.getInstance().parse(Tests.sql0)).toString());
-        //System.out.println(PlanExecutor.executePlan(Parser.getInstance().parse(Tests.sql1)).toString());
-		//System.out.println(PlanExecutor.executePlan(Parser.getInstance().parse(Tests.sql2)).toString());
-		System.out.println(PlanExecutor.executePlan(Parser.getInstance().parse(Tests.sql3)).toString());
-		//Tests.printResult(PlanExecutor.executePlan(Parser.getInstance().parse(Tests.sql4)));
+        //test();
+        System.out.println(PlanExecutor.executePlan(Parser.getInstance().parse(Tests.sql0)).toString());
+        System.out.println(PlanExecutor.executePlan(Parser.getInstance().parse(Tests.sql1)).toString());
+		System.out.println(PlanExecutor.executePlan(Parser.getInstance().parse(Tests.sql2)).toString());
+		System.out.println(PlanExecutor.executePlan(Parser.getInstance().parse(Tests.sql3)));
+        System.out.println(PlanExecutor.executePlan(Parser.getInstance().parse(Tests.sql4)));
     }
 
 
