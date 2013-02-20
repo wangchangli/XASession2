@@ -1,6 +1,7 @@
 package com.xingcloud.xa.session2.ra.expr;
 
 import com.xingcloud.xa.session2.ra.Row;
+import sun.font.TrueTypeFont;
 
 /**
  * Author: mulisen
@@ -14,6 +15,10 @@ public class Equals extends BinaryExpression  {
 	}
 
 	public Object evaluate(Row input) {
-		return (Boolean)left.evaluate(input).equals(right.evaluate(input));
+        try{
+		    return (Boolean)left.evaluate(input).equals(right.evaluate(input));
+        }catch (Exception e){
+            return true;
+        }
 	}
 }

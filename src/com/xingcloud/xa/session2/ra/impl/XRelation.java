@@ -13,7 +13,7 @@ import java.util.Map;
  */
 public class XRelation implements Relation {
 
-	Map<String, Integer> columnIndex;
+	public Map<String, Integer> columnIndex;
 
 	List<Object[]> rows = new ArrayList<Object[]>();
 
@@ -44,9 +44,9 @@ public class XRelation implements Relation {
 
 	public static class XRow implements Row{
 
-		private Map<String, Integer> columnNames;
+		public Map<String, Integer> columnNames;
 
-		private Object[] rowData;
+		public Object[] rowData;
 
 		public XRow(Map<String, Integer> columnNames, Object[] rowData) {
 			this.columnNames = columnNames;
@@ -57,7 +57,11 @@ public class XRelation implements Relation {
 			return rowData[index];
 		}
 
-		public Object get(String columnName) {
+		public Object get(String columnName){
+            //System.out.println(columnName);
+            if (!columnNames.containsKey(columnName)){
+                //throw new Exception("COLUMN_NOT_EXIST");
+            }
 			return get(columnNames.get(columnName));
 		}
 	}

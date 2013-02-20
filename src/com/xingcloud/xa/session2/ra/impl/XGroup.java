@@ -21,7 +21,8 @@ public class XGroup extends AbstractOperation implements Group {
 	Expression[] projectionExpressions;
 
 	public Relation evaluate() {
-		return null;  //TODO method implementation
+		//return null;  //TODO method implementation
+
 	}
 
     public Group setInput(RelationProvider relation, Expression[] groupingExpressions, Expression[] projectionExpressions) {
