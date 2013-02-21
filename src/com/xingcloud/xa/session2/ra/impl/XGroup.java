@@ -1,6 +1,7 @@
 package com.xingcloud.xa.session2.ra.impl;
 
 import com.xingcloud.xa.session2.ra.*;
+import com.xingcloud.xa.session2.ra.expr.AggregationExpr;
 import com.xingcloud.xa.session2.ra.expr.Expression;
 
 import java.util.*;
@@ -55,8 +56,24 @@ public class XGroup extends AbstractOperation implements Group {
             for(Row row:oldRows){
                 _oldRows.add(((XRelation.XRow)row).rowData);
             }
+
             XProjection xProjection = new XProjection();
-            xProjection.setInput(new XRelation(_columnIndex,_oldRows),projectionExpressions);
+            RelationProvider relationProvider = new XRelation(_columnIndex,_oldRows);
+
+            //reinput the aggregation expression's relation provider
+            for(Expression expression:projectionExpressions){
+                if(expression instanceof AggregationExpr){
+                    Aggregation aggregation = ((AggregationExpr)expression).aggregation;
+                    if (aggregation instanceof Sum){
+                        ((XSum) aggregation).setInput(relationProvider,((XSum) aggregation).columnName);
+                    }else if (aggregation instanceof Count){
+                        ((XCount)aggregation).setInput(relationProvider);
+                    }else if (aggregation instanceof Distinct){
+                        ((XDistinct)aggregation).setInput(relationProvider, ((XDistinct)aggregation).expressions);
+                    }
+                }
+            }
+            xProjection.setInput(relationProvider, projectionExpressions);
 
             //projection
             XRelation relation = (XRelation)xProjection.evaluate();

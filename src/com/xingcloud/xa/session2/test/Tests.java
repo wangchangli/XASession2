@@ -29,6 +29,11 @@ public class Tests {
 			                    "WHERE user.register_time>='20130201000000' AND user.register_time<'20130202000000'\n" +
 			                    "AND event.date='2013-02-02' AND event.event='visit';";
 
+    public static String sql3_1 = "SELECT *\n" +
+            "FROM (event NATURAL JOIN user)\n" +
+            "WHERE user.register_time>='20130201000000' AND user.register_time<'20130202000000'\n" +
+            "AND event.date='2013-02-02' AND event.event='visit' group by user.ref0;";
+
     public static String sql4 = "SELECT user.ref0, COUNT(DISTINCT(uid)), SUM(value)\n" +
 			                    "FROM (event NATURAL JOIN user)\n" +
 								"WHERE user.register_time>='20130201000000' AND user.register_time<'20130202000000'\n" +
@@ -47,18 +52,20 @@ public class Tests {
 	public static void main(String[] args) throws JSQLParserException{
         try{
             //test();
-            String file = "data/1/result";
+            String file = "data/2/result";
             BufferedWriter bw = new BufferedWriter(new FileWriter(file));
             try{
                 //bw.write(sql0+"\n");
                 //bw.write(PlanExecutor.executePlan(Parser.getInstance().parse(Tests.sql0)).toString());
-                bw.write(sql1+"\n");
+                bw.write("\n"+sql1+"\n");
                 bw.write(PlanExecutor.executePlan(Parser.getInstance().parse(Tests.sql1)).toString());
-                bw.write(sql2+"\n");
+                bw.write("\n"+sql2+"\n");
                 bw.write(PlanExecutor.executePlan(Parser.getInstance().parse(Tests.sql2)).toString());
-                bw.write(sql3+"\n");
+                bw.write("\n"+sql3+"\n");
                 bw.write(PlanExecutor.executePlan(Parser.getInstance().parse(Tests.sql3)).toString());
-                bw.write(sql4+"\n");
+                //bw.write("\n"+sql3_1+"\n");
+                //bw.write(PlanExecutor.executePlan(Parser.getInstance().parse(Tests.sql3_1)).toString());
+                bw.write("\n"+sql4+"\n");
                 bw.write(PlanExecutor.executePlan(Parser.getInstance().parse(Tests.sql4)).toString());
                 bw.flush();
             }catch (Exception ee){

@@ -12,7 +12,7 @@ import java.util.*;
 public class XDistinct extends AbstractOperation implements Distinct {
 
 	RelationProvider relation;
-	Expression[] expressions;
+	public Expression[] expressions;
 
 	public Relation evaluate() {
 		//return null;  //TODO method implementation

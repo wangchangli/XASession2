@@ -9,7 +9,7 @@ import com.xingcloud.xa.session2.ra.*;
 public class XSum extends AbstractAggregation implements Sum {
 
 	RelationProvider relation;
-	String columnName;
+	public String columnName;
 	public Aggregation setInput(RelationProvider relation, String columnName) {
         resetInput();
 		init();
