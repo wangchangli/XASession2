@@ -62,6 +62,10 @@ public class XDistinct extends AbstractOperation implements Distinct {
 		return this;
 	}
 
+    public void updateRelation(RelationProvider relation){
+        this.relation = relation;
+    }
+
 	@Override
 	public String toString() {
 		return IndentPrint.print(this);

@@ -100292,17 +100292,10 @@ visit	18317
 visit	18317
 visit	15924
 
-SELECT COUNT(DISTINCT(uid))
-FROM (event NATURAL JOIN user)
-WHERE user.register_time>='20130201000000' AND user.register_time<'20130202000000'
-AND event.date='2013-02-02' AND event.event='visit';
-COUNT(..)
-325
-
 SELECT user.ref0, COUNT(DISTINCT(uid)), SUM(value)
 FROM (event NATURAL JOIN user)
 WHERE user.register_time>='20130201000000' AND user.register_time<'20130202000000'
 AND event.date='2013-02-02' AND event.event='visit' GROUP BY user.ref0;
 `ref0`	COUNT(..)	SUM(..)
-facebook	996	4482
-adwords	2499	11425
+facebook	95	4482
+adwords	230	11425

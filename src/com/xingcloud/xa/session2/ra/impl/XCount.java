@@ -16,6 +16,13 @@ public class XCount extends AbstractAggregation implements Count {
 		return this;
 	}
 
+    public void updateRelation(RelationProvider relation){
+        if(this.relation instanceof XDistinct){
+            ((XDistinct)this.relation).updateRelation(relation);
+            ((XDistinct)this.relation).result = null;
+        }
+    }
+
 	public Object aggregate() {
 		//return null;  //TODO method implementation
         Long l = 0L;

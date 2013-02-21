@@ -19,6 +19,10 @@ public class XSum extends AbstractAggregation implements Sum {
 		return this;
 	}
 
+    public void updateRelation(RelationProvider relation){
+        this.relation = relation;
+    }
+
 	public Object aggregate() {
 		//return null;  //TODO method implementation
         //if (result == null){ //todo

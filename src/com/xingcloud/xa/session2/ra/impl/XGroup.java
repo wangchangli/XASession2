@@ -65,9 +65,11 @@ public class XGroup extends AbstractOperation implements Group {
                 if(expression instanceof AggregationExpr){
                     Aggregation aggregation = ((AggregationExpr)expression).aggregation;
                     if (aggregation instanceof Sum){
-                        ((XSum) aggregation).setInput(relationProvider,((XSum) aggregation).columnName);
+                        //((XSum) aggregation).setInput(relationProvider,((XSum) aggregation).columnName);
+                        ((XSum) aggregation).updateRelation(relationProvider);
                     }else if (aggregation instanceof Count){
-                        ((XCount)aggregation).setInput(relationProvider);
+                        //((XCount)aggregation).setInput(relationProvider);
+                        ((XCount)aggregation).updateRelation(relationProvider);
                     }else if (aggregation instanceof Distinct){
                         ((XDistinct)aggregation).setInput(relationProvider, ((XDistinct)aggregation).expressions);
                     }

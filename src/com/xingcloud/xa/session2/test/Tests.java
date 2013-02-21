@@ -61,8 +61,8 @@ public class Tests {
                 bw.write(PlanExecutor.executePlan(Parser.getInstance().parse(Tests.sql1)).toString());
                 bw.write("\n"+sql2+"\n");
                 bw.write(PlanExecutor.executePlan(Parser.getInstance().parse(Tests.sql2)).toString());
-                bw.write("\n"+sql3+"\n");
-                bw.write(PlanExecutor.executePlan(Parser.getInstance().parse(Tests.sql3)).toString());
+                //bw.write("\n"+sql3+"\n");
+                //bw.write(PlanExecutor.executePlan(Parser.getInstance().parse(Tests.sql3)).toString());
                 //bw.write("\n"+sql3_1+"\n");
                 //bw.write(PlanExecutor.executePlan(Parser.getInstance().parse(Tests.sql3_1)).toString());
                 bw.write("\n"+sql4+"\n");
