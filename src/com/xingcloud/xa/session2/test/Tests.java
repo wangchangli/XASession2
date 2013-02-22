@@ -46,7 +46,9 @@ public class Tests {
 //        set.add("a");
 //        set.add("b".toString());
 //        System.out.println(set.contains("b"));
-        System.out.println(((Boolean)(2>1)).toString());
+        //System.out.println(((Boolean)(2>1)).toString());
+        System.out.println(String.valueOf("aa").hashCode());
+        System.out.println(String.valueOf("aa").hashCode());
     }
 
 	public static void main(String[] args) throws JSQLParserException{

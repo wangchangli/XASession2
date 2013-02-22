@@ -42,16 +42,28 @@ public class XJoin extends AbstractOperation implements Join{
                 }
             }
 
-            // get the natural rows
+            Map<String, List<Object[]>> rightNaturalMap = new HashMap<String, List<Object[]>>();
+            for(Object[] rightRow:rightRows){
+                StringBuilder sb = new StringBuilder();
+                for(String sameCol:sameCols){
+                    sb.append(rightRow[rightColumnIndex.get(sameCol)].toString());
+                }
+
+                if(!rightNaturalMap.containsKey(sb.toString())){
+                    rightNaturalMap.put(sb.toString(),new ArrayList<Object[]>());
+                }
+
+                rightNaturalMap.get(sb.toString()).add(rightRow);
+            }
+
             for(Object[] leftRow: leftRows){
-                for(Object[] rightRow:rightRows){
-                    Boolean natural = true;
-                    for(String sameCol: sameCols){
-                        if (!(leftRow[leftColumnIndex.get(sameCol)].toString().equals(rightRow[rightColumnIndex.get(sameCol)].toString()))){
-                            natural = false;
-                        }
-                    }
-                    if(natural){
+                StringBuilder sb = new StringBuilder();
+                for(String sameCol:sameCols){
+                    sb.append(leftRow[leftColumnIndex.get(sameCol)].toString());
+                }
+
+                if(rightNaturalMap.containsKey(sb.toString())){
+                    for(Object[] rightRow:rightNaturalMap.get(sb.toString())){
                         Object[] newRow = new Object[leftRow.length+rightRow.length-sameCols.size()];
                         System.arraycopy(leftRow,0,newRow,0,leftRow.length);
 
@@ -67,6 +79,32 @@ public class XJoin extends AbstractOperation implements Join{
                     }
                 }
             }
+
+            // get the natural rows
+//            for(Object[] leftRow: leftRows){
+//                for(Object[] rightRow:rightRows){
+//                    Boolean natural = true;
+//                    for(String sameCol: sameCols){
+//                        if (!(leftRow[leftColumnIndex.get(sameCol)].toString().equals(rightRow[rightColumnIndex.get(sameCol)].toString()))){
+//                            natural = false;
+//                        }
+//                    }
+//                    if(natural){
+//                        Object[] newRow = new Object[leftRow.length+rightRow.length-sameCols.size()];
+//                        System.arraycopy(leftRow,0,newRow,0,leftRow.length);
+//
+//                        int j=leftRow.length;
+//                        for(int i=0; i<rightRow.length; i++){
+//                            if(! rightSameColsIndex.contains(i)){
+//                                newRow[j] = rightRow[i];
+//                                j++;
+//                            }
+//                        }
+//
+//                        rows.add(newRow);
+//                    }
+//                }
+//            }
 
             // combine the left/right column index
             Map<String, Integer> newColumnIndex = new TreeMap<String, Integer>();

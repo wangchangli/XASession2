@@ -45,6 +45,7 @@ public class XProjection extends AbstractOperation implements Projection{
                     Expression expression = new ColumnValue(entry.getKey());
                     projections[entry.getValue()] = expression;
                 }
+                // order the column
                 for(int j=0; j<oldColumnIndex.size();j++){
                     newProjections.add(projections[j]);
                     StringBuilder sb = new StringBuilder();
