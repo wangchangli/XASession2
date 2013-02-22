@@ -20,7 +20,7 @@ import java.util.Set;
 public class Tests {
 
     public static String sql0 = "select * from (event natural join user) group by user.ref0";
-	public static String sql1 = "select * from event;";
+	public static String sql1 = "select * from user;";
 
 	public static String sql2 = "select event, uid from event where date='2013-02-01';";
 
@@ -57,15 +57,15 @@ public class Tests {
             try{
                 //bw.write(sql0+"\n");
                 //bw.write(PlanExecutor.executePlan(Parser.getInstance().parse(Tests.sql0)).toString());
-                bw.write("\n"+sql1+"\n");
+                //bw.write("\n"+sql1+"\n");
                 bw.write(PlanExecutor.executePlan(Parser.getInstance().parse(Tests.sql1)).toString());
-                bw.write("\n"+sql2+"\n");
+                //bw.write("\n"+sql2+"\n");
                 bw.write(PlanExecutor.executePlan(Parser.getInstance().parse(Tests.sql2)).toString());
                 //bw.write("\n"+sql3+"\n");
-                //bw.write(PlanExecutor.executePlan(Parser.getInstance().parse(Tests.sql3)).toString());
+                bw.write(PlanExecutor.executePlan(Parser.getInstance().parse(Tests.sql3)).toString());
                 //bw.write("\n"+sql3_1+"\n");
                 //bw.write(PlanExecutor.executePlan(Parser.getInstance().parse(Tests.sql3_1)).toString());
-                bw.write("\n"+sql4+"\n");
+                //bw.write("\n"+sql4+"\n");
                 bw.write(PlanExecutor.executePlan(Parser.getInstance().parse(Tests.sql4)).toString());
                 bw.flush();
             }catch (Exception ee){
